@@ -67,7 +67,7 @@ class _USPTOLoader(_MolnetLoader):
 def load_uspto(
     featurizer: Union[dc.feat.Featurizer, str] = dc.feat.DummyFeaturizer(),
     splitter: Union[dc.splits.Splitter, str, None] = None,
-    transformers: List[Union[TransformerGenerator, str]] = [],
+    transformers: List[Union[TransformerGenerator, str]] = ['rxnsplit'],
     reload: bool = True,
     data_dir: Optional[str] = None,
     save_dir: Optional[str] = None,

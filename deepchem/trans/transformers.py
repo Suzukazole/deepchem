@@ -2566,8 +2566,11 @@ class RxnSplitTransformer(Transformer):
     """
 
     reactant = list(map(lambda x: x.split('>')[0], X))
+    #reactant = [x.split('>')[0] for x in X]
     reagent = list(map(lambda x: x.split('>')[1], X))
+    #reagent = [x.split('>')[1] for x in X]
     product = list(map(lambda x: x.split('>')[2], X))
+    #product = [x.split('>')[2] for x in X]
 
     if self.sep_reagent:
       source = [x + '>' + y for x, y in zip(reactant, reagent)]

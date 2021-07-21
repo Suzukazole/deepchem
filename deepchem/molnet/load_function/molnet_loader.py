@@ -75,7 +75,9 @@ transformers = {
     'clipping':
     TransformerGenerator(dc.trans.ClippingTransformer, transform_y=True),
     'log':
-    TransformerGenerator(dc.trans.LogTransformer, transform_y=True)
+    TransformerGenerator(dc.trans.LogTransformer, transform_y=True),
+    'rxnsplit':
+    TransformerGenerator(dc.trans.RxnSplitTransformer, sep_reagent=False)
 }
 
 
