@@ -67,18 +67,18 @@ class _USPTOLoader(_MolnetLoader):
 def load_uspto(
     featurizer: Union[dc.feat.Featurizer, str] = dc.feat.DummyFeaturizer(),
     splitter: Union[dc.splits.Splitter, str, None] = None,
-    transformers: List[Union[TransformerGenerator, str]] = ['rxnsplit'],
+    transformers: List[Union[TransformerGenerator, str]] = [TransformerGenerator(dc.trans.RxnSplitTransformer, sep_reagent=True)],
     reload: bool = True,
     data_dir: Optional[str] = None,
     save_dir: Optional[str] = None,
     subset: str = "MIT",
-    sep_reagent: bool = True,  # functionality to be added!
+    sep_reagent: bool = True,
     **kwargs
 ) -> Tuple[List[str], Tuple[Dataset, ...], List[dc.trans.Transformer]]:
   """Load USPTO Datasets.
 
   USPTO is a dataset of over 1.8 Million organic chemical reactions extracted
-  from US patents and patent applications. The dataset contains the reactions
+  from US patents and patent applications [1]_. The dataset contains the reactions
   in the form of reaction SMILES, which have the general format:
   reactant>reagent>product.
 
@@ -89,7 +89,7 @@ def load_uspto(
   The 50K dataset contatins 50,000 reactions and is the benchmark for
   retrosynthesis predictions. The reactions are additionally classified into 10
   reaction classes. The canonicalized version of the dataset used by the loader
-  is the same as that used by somnath et. al.
+  is the same as that used by Somnath et. al.
 
   The loader uses the SpecifiedSplitter to use the same splits as specified
   by Schwaller and Coley. Custom splitters could also be used. There is also a
@@ -133,6 +133,8 @@ def load_uspto(
     transformers : list
       ``deepchem.trans.transformers.Transformer`` instances applied
       to dataset.
+
+  References
   ----------
   .. [1] Lowe, D.. (2017). Chemical reactions from US patents (1976-Sep2016)
         (Version 1). figshare. https://doi.org/10.6084/m9.figshare.5104873.v1
@@ -147,6 +149,9 @@ def load_uspto(
          Retrosynthesis prediction with conditional graph logic network.
          arXiv preprint arXiv:2001.01408.
   """
+
+  if not sep_reagent:
+    transformers = [TransformerGenerator(dc.trans.RxnSplitTransformer, sep_reagent=False)]
 
   loader = _USPTOLoader(
       featurizer,
